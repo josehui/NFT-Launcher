@@ -105,6 +105,15 @@ export default function Nav() {
             </Stack>
           </Flex>
         </Flex>
+        {isOpen ? (
+          <Box pb={4} display={{ md: 'none' }}>
+            <Stack as={'nav'} spacing={4}>
+              {Links.map((link) => (
+                <NavLink key={link.name} url={link.url}>{link.name}</NavLink>
+              ))}
+            </Stack>
+          </Box>
+        ) : null}
       </Box>
     </>
   );

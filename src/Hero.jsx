@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   createIcon,
 } from '@chakra-ui/react';
+import TestBlob from './TESTBlob';
 
 const Hero = () => {
   return (
@@ -64,7 +65,7 @@ const Hero = () => {
                 Upload a random image to get started
             </Heading>
 
-            <Box>
+            {/* <Box>
               <Icon
                 as={Arrow}
                 color={useColorModeValue('gray.800', 'gray.300')}
@@ -82,9 +83,10 @@ const Hero = () => {
                 transform={'rotate(10deg)'}>
                 Starting at $10/mo
               </Text>
-            </Box>
+            </Box> */}
           </Stack>
         </Stack>
+        {/* <TestBlob /> */}
       </Container>
     </>
   );

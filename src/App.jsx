@@ -7,6 +7,7 @@ import {
   Routes,
   Route,
 } from "react-router";
+import CallToActionLeft from './CallToAction'
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/about" element={<About />} />
-        <Route path="/" element={<><Hero /><Uploader /></>} />
+        <Route path="/" element={<><Hero /><Uploader /><CallToActionLeft /></>} />
       </Routes>
 
 
