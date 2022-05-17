@@ -23,6 +23,9 @@ import ImageEditor from './TEST-ImageEditor'
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginImageEdit)
 
+const generateImageName = () => {
+  console.log(file.name)
+}
 const Uploader = () => {
   const [files, setFiles] = useState([])
   return (
@@ -32,12 +35,12 @@ const Uploader = () => {
         files={files}
         onupdatefiles={setFiles}
         allowMultiple={false}
+        instantUpload={false}
         server={{
           process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
             uploadFileToBlob(file)
             .then(res => {
               load(res)
-              console.log(res)
             })
             .catch(err => {
               error(err)
@@ -46,7 +49,6 @@ const Uploader = () => {
             
             return {
               abort: () => {
-                console.log('aborted')
                 abort()
               }
             }

@@ -1,9 +1,13 @@
 import { BlobServiceClient, ContainerClient} from '@azure/storage-blob';
+import path from 'path-browserify';
 
 const containerName = `free-tier`;
 const sasToken = import.meta.env.VITE_STORAGESASTOKEN;
 const storageAccountName = import.meta.env.VITE_STORAGERESOURCENAME; 
-// </snippet_package>
+
+const generateImageName = (fileName) => {
+  return `F-${(Math.random().toString(36).substring(2, 13))}${path.parse(fileName).ext}`
+}
 
 // <snippet_isStorageConfigured>
 // Feature flag - disable storage feature to app if not configured
@@ -34,7 +38,7 @@ const getBlobsInContainer = async (containerClient) => {
 const createBlobInContainer = async (containerClient, file) => {
   
   // create blobClient for container
-  const blobClient = containerClient.getBlockBlobClient(file.name);
+  const blobClient = containerClient.getBlockBlobClient(generateImageName(file.name));
 
   // set mimetype as determined from browser with file upload control
   const options = { blobHTTPHeaders: { blobContentType: file.type } };
