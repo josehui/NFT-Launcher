@@ -69,11 +69,6 @@ const Viewer = ({ Item }) => {
     { GeneratingImage && 
       <Loader />
     }
-    {ImageUrl && 
-      <Box boxSize='sm'>
-        <Image src={ImageUrl} alt='Dan Abramov'/>
-      </Box>
-    }
     </Center>
     {PreviewImages && 
       <Carousels images={PreviewImages}/>

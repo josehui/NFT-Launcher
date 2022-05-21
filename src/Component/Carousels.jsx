@@ -5,7 +5,8 @@ import {
   useColorModeValue,
   Image,
   HStack,
-  chakra
+  chakra,
+  Center
 } from "@chakra-ui/react";
 import { useState } from 'react';
 
@@ -65,7 +66,7 @@ const Carousels = ({ images }) => {
     transition: "all .5s",
     ml: `-${currentSlide * 100}%`,
   };
-  
+
   return (
     <>
       <chakra.span
@@ -95,12 +96,14 @@ const Carousels = ({ images }) => {
                 >
                   {sid + 1} / {slidesCount}
                 </Text>
-                <Image
-                  src={slide.img}
-                  alt="carousel image"
-                  // boxSize="full"
-                  backgroundSize="cover"
-                />
+                <Center>
+                  <Image
+                    src={slide.img}
+                    alt="carousel image"
+                    // boxSize="full"
+                    backgroundSize="cover"
+                  />
+                </Center>
               </Box>
             ))}
           </Flex>

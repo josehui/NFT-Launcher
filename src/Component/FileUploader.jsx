@@ -31,7 +31,7 @@ const Uploader = ({ setItem, setImageUploaded}) => {
         files={files}
         onupdatefiles={setFiles}
         allowMultiple={false}
-        instantUpload={false}
+        // instantUpload={false}
         onprocessfile = {() => {setImageUploaded(true)}}
         server={{
           process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
