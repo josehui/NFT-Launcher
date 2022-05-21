@@ -44,7 +44,7 @@ const createBlobInContainer = async (containerClient, file) => {
   const options = { blobHTTPHeaders: { blobContentType: file.type } };
 
   // upload file
-  await blobClient.uploadData(file, options);
+  return await blobClient.uploadData(file, options);
 }
 // </snippet_createBlobInContainer>
 
@@ -64,10 +64,10 @@ const uploadFileToBlob = async (file) => {
   });
 
   // upload file
-  await createBlobInContainer(containerClient, file);
+  const req_meta = await createBlobInContainer(containerClient, file);
 
   // get list of blobs in container
-  return getBlobsInContainer(containerClient);
+  return req_meta;
 };
 // </snippet_uploadFileToBlob>
 

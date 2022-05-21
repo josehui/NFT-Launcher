@@ -8,9 +8,9 @@ import {
   Stack,
   Icon,
   useColorModeValue,
+  Link,
   createIcon,
 } from '@chakra-ui/react';
-import TestBlob from './TESTBlob';
 
 const Hero = () => {
   return (
@@ -56,10 +56,14 @@ const Hero = () => {
               _hover={{
                 bg: 'green.500',
               }}>
-              Launch your NFT now
+              <Link _hover={{textDecoration: 'none'}} href='/#guide'>
+                Launch your NFT now
+              </Link>
             </Button>
             <Button variant={'link'} colorScheme={'teal'} size={'sm'}>
-              Learn more
+              <Link href='/about'>
+                Learn more
+              </Link>
             </Button>
             <Heading fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
                 Upload a random image to get started

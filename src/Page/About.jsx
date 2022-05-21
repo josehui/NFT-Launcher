@@ -17,6 +17,11 @@ const About = () => {
       </Center>
       <Container maxW='600px'>
         <Center mt={5}>
+            <img src="https://external-preview.redd.it/hrgSP1rL2COo31tVU1CNZSIZKdKdJZfbQUfAydO91d0.jpg?auto=webp&s=bbc281a631fc2c6055b94704695d7cb2af700139" alt="hihi"></img>
+        </Center>
+      </Container>
+      <Container maxW='600px'>
+        <Center mt={5}>
             <img src={PortfolioMeme} alt="hihi"></img>
         </Center>
       </Container>

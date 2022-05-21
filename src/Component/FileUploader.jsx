@@ -7,7 +7,7 @@ import { FilePond, registerPlugin } from 'react-filepond'
 
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css'
-import './style/FilePond.css'
+import '@/src/style/FilePond.css'
 
 // Import the Image EXIF Orientation and Image Preview plugins
 // Note: These need to be installed separately
@@ -17,16 +17,12 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageEdit from 'filepond-plugin-image-edit';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
-import uploadFileToBlob, { isStorageConfigured } from './lib/azure-blob';
+import uploadFileToBlob, { isStorageConfigured } from '@/src/lib/azure-blob';
 
-import ImageEditor from './TEST-ImageEditor'
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginImageEdit)
 
-const generateImageName = () => {
-  console.log(file.name)
-}
-const Uploader = () => {
+const Uploader = ({ setItem, setImageUploaded}) => {
   const [files, setFiles] = useState([])
   return (
     <Container>
@@ -36,11 +32,15 @@ const Uploader = () => {
         onupdatefiles={setFiles}
         allowMultiple={false}
         instantUpload={false}
+        onprocessfile = {() => {setImageUploaded(true)}}
         server={{
           process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
             uploadFileToBlob(file)
             .then(res => {
+              console.log(res.clientRequestId)  
               load(res)
+              setItem(res)
+
             })
             .catch(err => {
               error(err)
@@ -59,7 +59,6 @@ const Uploader = () => {
         credits={false}
       />
       <Container>
-        <ImageEditor />
       </Container>
     </Container>
   )

@@ -23,7 +23,7 @@ import { MoonIcon, SunIcon, HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui
 const Links = [
   {name: 'Home', url: "/"},
   {name: 'About', url: "/about"},
-  {name: 'Team', url: "#team"}
+  {name: 'Team', url: "/team"}
 ];
 const NavLink = ({ url, children }) => (
   <Link

@@ -13,9 +13,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-export default function CallToActionLeft() {
+export default function CallToActionLeft(props) {
   return (
-    <Container maxW={'7xl'}>
+    <Container id={props.id} maxW={'7xl'}>
       <Stack
         align={'center'}
         spacing={{ base: 8, md: 10 }}

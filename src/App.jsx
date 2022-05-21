@@ -1,22 +1,21 @@
-import './App.css'
-import Hero from './Hero'
-import About from './About'
-import Nav from './NavBar'
-import Uploader from './FileUploader'
+import './style/App.css'
+import About from './Page/About'
+import Nav from './Component/NavBar'
 import {
   Routes,
   Route,
 } from "react-router";
-import CallToActionLeft from './CallToAction'
-
-function App() {
+import Home from './Page/Home';
+import Team from './Page/Team';
+const App = () => {
 
   return (
     <div className="App">
       <Nav />
       <Routes>
         <Route path="/about" element={<About />} />
-        <Route path="/" element={<><Hero /><Uploader /><CallToActionLeft /></>} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/" element={<Home />} />
       </Routes>
 
 

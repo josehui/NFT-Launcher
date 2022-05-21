@@ -10,5 +10,14 @@ export default defineConfig({
 
     },
   },
-  plugins: [react()]
+  plugins: [react()],
+  // build: {
+  //   minify: 'terser',
+  //   terserOptions: {
+  //       compress: {
+  //           drop_console: true,
+  //           drop_debugger: true,
+  //       },
+  //   },
+  // },
 })

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "axios": "^0.27.2",
     "filepond": "^4.30.3",
     "filepond-plugin-file-validate-type": "^1.2.8",
     "filepond-plugin-image-edit": "^1.6.3",
@@ -26,6 +27,7 @@
     "react-filerobot-image-editor": "^4.2.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
+    "retry-axios": "^3.0.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {

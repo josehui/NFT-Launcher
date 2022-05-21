@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Path from 'path-browserify';
-import uploadFileToBlob, { isStorageConfigured } from './lib/azure-blob';
+import uploadFileToBlob, { isStorageConfigured } from '../lib/azure-blob';
 
 const storageConfigured = isStorageConfigured();
 
