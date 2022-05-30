@@ -7,7 +7,7 @@ const About = () => {
     <Box textAlign="center" py={10} px={6}>
       <InfoIcon boxSize={'50px'} color={'blue.500'} />
       <Heading as="h2" size="xl" mt={6} mb={2}>
-        Crpyto is magic, just like the stock market
+        NFT is magic, just like the stock market
       </Heading>
       <Text color={'gray.500'}>
         Who needs research when you have memes

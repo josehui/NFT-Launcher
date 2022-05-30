@@ -11,6 +11,7 @@ import axios from 'axios';
 import * as rax from 'retry-axios';
 import { useState, useEffect } from 'react';
 import Carousels from "./Carousels";
+import Alert from './Alert'
 
 
 
@@ -30,7 +31,8 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 const Viewer = ({ Item }) => {
   const [GeneratingImage, setGeneratingImage] = useState(false)
   const [ImageUrl, setImageUrl] = useState("")
-  const [PreviewImages, setPreviewImages] =  useState("")
+  const [PreviewImages, setPreviewImages] = useState("")
+  const [ErrorMsg, setErrorMsg] = useState("")
   rax.attach();
   axios.defaults.baseURL = import.meta.env.VITE_API_SERVER
 
@@ -60,19 +62,17 @@ const Viewer = ({ Item }) => {
     } catch(error) {
       console.log(error)
       setGeneratingImage(false)
+      setErrorMsg("Something went wrong, please try again.")
     }
   }, [Item])
 
   return (
     <>
     <Center mt={10}>
-    { GeneratingImage && 
-      <Loader />
-    }
+    { GeneratingImage && <Loader />}
     </Center>
-    {PreviewImages && 
-      <Carousels images={PreviewImages}/>
-    }
+    { PreviewImages && <Carousels images={PreviewImages}/> }
+    { ErrorMsg && <Alert msg={ErrorMsg} /> }
     </>
     
   )

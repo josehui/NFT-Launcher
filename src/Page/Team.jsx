@@ -23,7 +23,7 @@ const TeamInfo =[
   },
   {
     name: "Fatboi 2",
-    des: "Photoshop your image in the back",
+    des: "Photoshop your image",
     img: "https://m.media-amazon.com/images/I/51687CO61NL._AC_SL1500_.jpg"
   }
 ]
@@ -35,8 +35,8 @@ const Team = () => {
       </Heading>
       <Flex
         bg={useColorModeValue("#F9FAFB", "gray.600")}
-        p={50}
         w="full"
+        p={5}
         alignItems="center"
         justifyContent="center"
       >
