@@ -37,10 +37,11 @@ const ImageGenerator = () => {
           <ModalHeader>Buy me coffee</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Thanks but support this instead: {' '}
-            <Link color='green' href="https://www.kickstarter.com/projects/16by9/smashing-frank">
-              https://www.kickstarter.com/projects/16by9/smashing-frank
+            Thanks but support {' '}
+            <Link color='teal.500' href="https://www.facebook.com/fundraisers/explore/search/charities/?query=ukraine" isExternal>
+              Ukraine
             </Link>
+            {' '}instead
           </ModalBody>
 
           <ModalFooter>
@@ -49,9 +50,11 @@ const ImageGenerator = () => {
             </Button>
             <Button onClick={() =>
               toast({
-                title: 'Dont on9 la',
-                description: "On9 jai",
-                status: 'warning',
+                colorScheme: 'teal',
+                title: 'You are on9, I like you',
+                description: "Let's get lunch!",
+                status: 'info',
+                position: 'top',
                 duration: 4000,
                 isClosable: true,
             })}>

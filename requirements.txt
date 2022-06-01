@@ -4,3 +4,6 @@
 
 azure-functions
 azure.cosmos
+azure-storage-blob
+tensorflow
+tensorflow-hub==0.12.0

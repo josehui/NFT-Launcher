@@ -2,12 +2,15 @@ import json
 import logging
 
 import azure.functions as func
-
+from . import image_generator as IG
 
 def main(event: func.EventGridEvent, doc: func.Out[func.Document]):
 
     # TO-DO: Add image generation code
-     
+    IG.testHihi()
+    img = IG.process_images()
+    logging.info(type(img))
+
     # Output result to cosmos db
     event_data = event.get_json()
     # event logger
