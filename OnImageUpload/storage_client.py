@@ -9,19 +9,22 @@ connect_str = os.environ["ConnectionStrings:AZURE_STORAGE_CONNECTION_STRING"]
 # Create the BlobServiceClient object which will be used to create a container client
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
-blob_client = blob_service_client.get_blob_client(container=container_name, blob=file_name)
+blob_client = blob_service_client.get_blob_client(
+    container=container_name, blob=file_name)
 
 
 def testHihi():
-  try:
-      print("Azure Blob Storage v" + __version__ + " - Python quickstart sample")
+    try:
+        print("Azure Blob Storage v" + __version__ +
+              " - Python quickstart sample")
 
-      # Quick start code goes here
+        # Quick start code goes here
 
-  except Exception as ex:
-      print('Exception:')
-      print(ex)
-  return
+    except Exception as ex:
+        print('Exception:')
+        print(ex)
+    return
+
 
 def uploadFile(data):
     try:
