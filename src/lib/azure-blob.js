@@ -1,19 +1,21 @@
-import { BlobServiceClient, ContainerClient} from '@azure/storage-blob';
-import path from 'path-browserify';
+import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
+import path from "path-browserify";
 
 const containerName = `free-tier`;
 const sasToken = import.meta.env.VITE_STORAGESASTOKEN;
-const storageAccountName = import.meta.env.VITE_STORAGERESOURCENAME; 
+const storageAccountName = import.meta.env.VITE_STORAGERESOURCENAME;
 
 const generateImageName = (fileName) => {
-  return `F-${(Math.random().toString(36).substring(2, 13))}${path.parse(fileName).ext}`
-}
+  return `F-${Math.random().toString(36).substring(2, 13)}${
+    path.parse(fileName).ext
+  }`;
+};
 
 // <snippet_isStorageConfigured>
 // Feature flag - disable storage feature to app if not configured
 export const isStorageConfigured = () => {
-  return (!storageAccountName || !sasToken) ? false : true;
-}
+  return !storageAccountName || !sasToken ? false : true;
+};
 // </snippet_isStorageConfigured>
 
 // <snippet_getBlobsInContainer>
@@ -31,21 +33,22 @@ const getBlobsInContainer = async (containerClient) => {
   }
 
   return returnedBlobUrls;
-}
+};
 // </snippet_getBlobsInContainer>
 
 // <snippet_createBlobInContainer>
 const createBlobInContainer = async (containerClient, file) => {
-  
   // create blobClient for container
-  const blobClient = containerClient.getBlockBlobClient(generateImageName(file.name));
+  const blobClient = containerClient.getBlockBlobClient(
+    generateImageName(file.name)
+  );
 
   // set mimetype as determined from browser with file upload control
   const options = { blobHTTPHeaders: { blobContentType: file.type } };
 
   // upload file
   return await blobClient.uploadData(file, options);
-}
+};
 // </snippet_createBlobInContainer>
 
 // <snippet_uploadFileToBlob>
@@ -60,7 +63,7 @@ const uploadFileToBlob = async (file) => {
   // // get Container - full public read access
   const containerClient = blobService.getContainerClient(containerName);
   await containerClient.createIfNotExists({
-    access: 'container',
+    access: "container",
   });
 
   // upload file

@@ -2,8 +2,6 @@
 .filepond--root .filepond--drop-label {
   height: 200px;
   opacity: 0.5;
-
-
 }
 .filepond--panel-root {
   /* border-radius: 0; */
@@ -11,9 +9,7 @@
   outline-offset: 15px;
 }
 
-
 .filepond--drip {
   outline: 4px dotted rgb(7, 6, 6);
   outline-offset: 15px;
-  
 }

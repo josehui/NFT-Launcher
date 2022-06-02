@@ -6,10 +6,9 @@ import {
   Image,
   HStack,
   chakra,
-  Center
+  Center,
 } from "@chakra-ui/react";
-import { useState } from 'react';
-
+import { useState } from "react";
 
 const Carousels = ({ images }) => {
   const arrowStyles = {
@@ -120,7 +119,9 @@ const Carousels = ({ images }) => {
                 cursor="pointer"
                 boxSize={["7px", , "15px"]}
                 m="0 2px"
-                bg={currentSlide === slide ? "blackAlpha.800" : "blackAlpha.500"}
+                bg={
+                  currentSlide === slide ? "blackAlpha.800" : "blackAlpha.500"
+                }
                 rounded="50%"
                 display="inline-block"
                 transition="background-color 0.6s ease"
@@ -135,4 +136,4 @@ const Carousels = ({ images }) => {
   );
 };
 
-export default Carousels
+export default Carousels;

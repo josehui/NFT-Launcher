@@ -1,8 +1,8 @@
 // ./src/App.tsx
 
-import React, { useState } from 'react';
-import Path from 'path-browserify';
-import uploadFileToBlob, { isStorageConfigured } from '../lib/azure-blob';
+import React, { useState } from "react";
+import Path from "path-browserify";
+import uploadFileToBlob, { isStorageConfigured } from "../lib/azure-blob";
 
 const storageConfigured = isStorageConfigured();
 
@@ -41,12 +41,12 @@ const TestBlob = () => {
   // display form
   const DisplayForm = () => (
     <div>
-      <input type="file" onChange={onFileChange} key={inputKey || ''} />
+      <input type="file" onChange={onFileChange} key={inputKey || ""} />
       <button type="submit" onClick={onFileUpload}>
         Upload!
-          </button>
+      </button>
     </div>
-  )
+  );
 
   // display file name and image
   const DisplayImagesFromContainer = () => (

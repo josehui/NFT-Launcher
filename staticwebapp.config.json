@@ -1,9 +1,12 @@
 {
-    "navigationFallback": {
-       "rewrite": "index.html",
-       "exclude": ["/images/*.{png,jpg,jpeg,gif,bmp}",   "/assets/*.{css,png,jpg,jpeg,gif,bmp,ico}"]
-    },
-    "mimeTypes": {
-        ".json": "text/json"
-    }
+  "navigationFallback": {
+    "rewrite": "index.html",
+    "exclude": [
+      "/images/*.{png,jpg,jpeg,gif,bmp}",
+      "/assets/*.{css,png,jpg,jpeg,gif,bmp,ico}"
+    ]
+  },
+  "mimeTypes": {
+    ".json": "text/json"
+  }
 }
