@@ -21,8 +21,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             "No id found in request",
             status_code=400
         )
-    record['data']['previewImages'] = [
-        {'img': record['data']['url']} for i in range(5)]
+    # record['data']['previewImages'] = [
+    #     {'img': record['data']['previewImages']} for i in range(5)]
     res = json.dumps(record)
     headers = {'Content-Type': 'application/json'}
     return func.HttpResponse(res, headers=headers)

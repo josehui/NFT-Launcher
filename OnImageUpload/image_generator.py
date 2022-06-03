@@ -7,23 +7,49 @@ import tensorflow as tf
 import tensorflow_hub as hub
 import logging
 from . import storage_client
+import random
+import zipfile
+
 
 # @title Load example images  { display-mode: "form" }
 
 # @param {type:"string"}
-content_image_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Golden_Gate_Bridge_from_Battery_Spencer.jpg/640px-Golden_Gate_Bridge_from_Battery_Spencer.jpg'
-# @param {type:"string"}
-style_image_url = 'https://lh3.googleusercontent.com/-ujfQIoEPFrdEP6JtNMDRSFT7-k_Hs0PHgxHFICVq130XA4NJso6D3Tfhd-zPV5tBEbYAFt35rR57K_48hKd7qV_Xlm5-ndYKaODntiyE9RUMCf7QakOe6XKKr_jG1nxz_oWbTyaGzjP7kpOC3X5SpsyQBy4lqqT5dLA8eL_EAxADRE4OqMKG71Wib9fcnC4Tnnw2BAAdFwfXY2dXSJATvHwTABDbjwjhSkekRvUuLufu759BZkZv0oB0yzyWt71yB-JC8HgqbeA8j5RQIZ5_OnC9ZP72JXCdcAZlBRSqgzkLJ2a9IYU9W88EDvo523z87C_6P5iKsYrXDhMUtvKwFW6zbDJkN51r1hIg2jGjCIwwoN8foaHyDnxZdMvU7CXjNo1PUX_eEnnoEuJhRbcZeFNIJ3zjzvDNji98RoAPLx4Zyf-UkoIHmFGVLLczYd9_gS3l67BqkhtIlsJ0JuJk0GgYTqc4BN4SyTGfG_NPoB3lwgcP_x3Hig8IEYCb7Hn1lGer3aKTZof1G1mRawg1dG_afyPe6-ulH6t6k0VwXP88WLGuJH1-SC98nqXypTYQHYDd0_483IwCc_s4OZipM55pLePWQwOrzyScRAO4qjkpuMS_e5JZAw86Pj7Bjjuxd_W4uTGRJk1gwRySQR_WvJJTL7jTtwVJAo-A6vJ39gotSu0NgGVfUy5uk77n-uoTWNXBqMQTvL229A4mJyLaFwSy-6aTkJx7jII4xq6F_w-fB-RlJbi1WcnNpkTlqU=w768-h1024-no?authuser=0'
-output_image_size = 500  # @param {type:"integer"}
+# style_image_url = 'https://nftlstorage.blob.core.windows.net/style-art-basel-2022/art-basel-2022-1.jpg'
+style_base_url = 'https://nftlstorage.blob.core.windows.net/'
+styles_container = 'style-art-basel-2022'
 
 # The content image size can be arbitrary.
-content_img_size = (output_image_size, output_image_size)
+output_image_size = 500
+output_img_size = (output_image_size, output_image_size)
+# Number of generated images
+output_batch_size = 10
+preview_size = 5
 # Model trained with 256x256
 style_img_size = (256, 256)
 
 # Load TF Hub module.
-hub_handle = '/Users/josehui/Downloads/magenta_arbitrary-image-stylization-v1-256_2'
+hub_handle = 'https://nftlstorage.blob.core.windows.net/tf-model/magenta_arbitrary-image-stylization-v1-256_2.tar.gz'
 hub_module = hub.load(hub_handle)
+
+
+def get_random_styles(sample_size=10):
+    result = []
+    count = 0
+    # Reservoir sampling in case number of blobs is very large
+    # Likely, overkill, but happy to learn something new.
+    # Simple solution would be list(style_gen)
+    style_gen = storage_client.listFile(styles_container)
+    for style in style_gen:
+        count += 1
+        if count <= sample_size:
+            result.append(
+                f"{style_base_url}{styles_container}/{style.name}")
+        else:
+            r = random.randint(0, count)
+            if r < sample_size:
+                result[r] = f"{style_base_url}{styles_container}/{style.name}"
+
+    return result
 
 
 def crop_center(image):
@@ -41,43 +67,53 @@ def crop_center(image):
 def load_image(image_url, image_size=(256, 256), preserve_aspect_ratio=True):
     """Loads and preprocesses images."""
     # Cache image file locally.
-    image_path = tf.keras.utils.get_file(
-        os.path.basename(image_url)[-128:], image_url)
+    image_name = os.path.basename(image_url)
+    image_path = tf.keras.utils.get_file(image_name, image_url)
     # Load and convert to float32 numpy array, add batch dimension, and normalize to range [0, 1].
     img = tf.io.decode_image(
         tf.io.read_file(image_path),
-        channels=3, dtype=tf.float32)[tf.newaxis, ...]
+        channels=3, dtype=tf.float32, expand_animations=False)[tf.newaxis, ...]
     img = crop_center(img)
     img = tf.image.resize(img, image_size, preserve_aspect_ratio=True)
     return img
 
 
-def generate_image():
-    content_image = load_image(content_image_url, content_img_size)
+def generate_image(content_image, style_image_url):
     style_image = load_image(style_image_url, style_img_size)
     style_image = tf.nn.avg_pool(
         style_image, ksize=[3, 3], strides=[1, 1], padding='SAME')
     stylized_image = hub_module(tf.constant(
         content_image), tf.constant(style_image))[0]
-    img_file = io.BytesIO()
-    tf.keras.utils.save_img(img_file, stylized_image[0], file_format='jpeg')
-    img_file.seek(0)
-    return img_file
-
-# main batch process func
+    img_data = io.BytesIO()
+    tf.keras.utils.save_img(img_data, stylized_image[0], file_format='jpeg')
+    img_data.seek(0)
+    return img_data
 
 
-def process_images():
-    img_file = generate_image()
-    res = storage_client.uploadFile(img_file)
-    return res
+def generate_zip(files):
+    mem_zip = io.BytesIO()
+    with zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for f in files:
+            zf.writestr(f[0], f[1])
+    return mem_zip.getvalue()
 
 
-def testHihi():
-    logging.info('testing Hhi')
-    print('aabb', type(hub_module))
-    print("TF Version: ", tf.__version__)
-    print("TF Hub version: ", hub.__version__)
-    print("Eager mode enabled: ", tf.executing_eagerly())
-    print("GPU available: ", tf.config.list_physical_devices('GPU'))
-    return
+def process_images(source_image_url):
+    preview_images = []
+    image_files = []
+    source_image = load_image(source_image_url, output_img_size)
+    image_name_prefix = os.path.splitext(os.path.basename(source_image_url))[0]
+    random_styles_url = get_random_styles(output_batch_size)
+    for i, style in enumerate(random_styles_url):
+        img_data = generate_image(source_image, style)
+        img_name = f"{image_name_prefix}_nftl_{i}.jpg"
+        if i < preview_size:
+            preview_img = storage_client.uploadFile(
+                img_data, file_name=img_name, file_type='image/jpeg')
+            preview_images.append({'img': preview_img})
+        image_files.append((img_name, img_data.getvalue()))
+    image_zip = generate_zip(image_files)
+    zip_name = f"{image_name_prefix}_nftl.zip"
+    zip_url = storage_client.uploadFile(image_zip, file_name=zip_name)
+    print('p_img', preview_images)
+    return (preview_images, zip_url)

@@ -8,13 +8,13 @@ from . import image_generator as IG
 def main(event: func.EventGridEvent, doc: func.Out[func.Document]):
 
     # TO-DO: Add image generation code
-    IG.testHihi()
-    img = IG.process_images()
-    logging.info(type(img))
-
-    # Output result to cosmos db
     event_data = event.get_json()
+    imgURL = event_data['url']
+    previewImages, bundleUrl = IG.process_images(imgURL)
+
     # event logger
+    event_data['previewImages'] = previewImages
+    event_data['bundleUrl'] = bundleUrl
     result = json.dumps({
         'id': event_data['clientRequestId'],
         'data': event_data,
