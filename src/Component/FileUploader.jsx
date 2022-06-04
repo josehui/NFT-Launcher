@@ -54,7 +54,6 @@ const Uploader = ({ setItem, setImageUploaded }) => {
           ) => {
             uploadFileToBlob(file)
               .then((res) => {
-                console.log(res.clientRequestId);
                 load(res);
                 setItem(res);
               })

@@ -70,7 +70,7 @@ const Viewer = ({ Item }) => {
         `/api/GetGeneratedImage?id=${Item.clientRequestId}`,
         reqConfig
       );
-      setBundleUrl(res.data.data.url);
+      setBundleUrl(res.data.data.bundleUrl);
       setPreviewImages(res.data.data.previewImages);
       setGeneratingImage(false);
     } catch (error) {
@@ -84,11 +84,17 @@ const Viewer = ({ Item }) => {
     <>
       <Center mt={10}>{GeneratingImage && <Loader />}</Center>
       {ErrorMsg && <Alert msg={ErrorMsg} />}
-      {PreviewImages && <Carousels images={PreviewImages} />}
+      {PreviewImages && (
+        <Carousels images={PreviewImages} setImages={setPreviewImages} />
+      )}
       {BundleUrl && (
         <HStack mt={10} spacing={8} justify="center">
           <Button onClick={onOpen}>Buy me coffee</Button>
-          <Button colorScheme="messenger">Download Zip</Button>
+          <Button colorScheme="messenger">
+            <Link href={BundleUrl} isExternal>
+              Download zip
+            </Link>
+          </Button>
         </HStack>
       )}
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -123,8 +129,8 @@ const Viewer = ({ Item }) => {
                   duration: 4000,
                   isClosable: true,
                   render: () => (
-                    <Box color="white" p={3} bg="grey">
-                      Ok, I love you <br />
+                    <Box color="white" borderRadius="md" p={3} bg="blue.300">
+                      <b>Ok, I love you</b> <br />
                       <Link
                         color="teal"
                         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"

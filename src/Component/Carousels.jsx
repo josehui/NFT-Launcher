@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const Carousels = ({ images }) => {
+const Carousels = ({ images, setImages }) => {
   const arrowStyles = {
     cursor: "pointer",
     pos: "absolute",
@@ -30,27 +30,22 @@ const Carousels = ({ images }) => {
     },
   };
 
-  const slides = [
-    {
-      img: "https://images.pexels.com/photos/2599537/pexels-photo-2599537.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    },
-    {
-      img: "https://images.pexels.com/photos/2714581/pexels-photo-2714581.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    },
-    {
-      img: "https://images.pexels.com/photos/2878019/pexels-photo-2878019.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-    },
-    {
-      img: "https://images.pexels.com/photos/1142950/pexels-photo-1142950.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    },
-    {
-      img: "https://images.pexels.com/photos/3124111/pexels-photo-3124111.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    },
-  ];
-
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [ClickCount, setClickCount] = useState(0);
 
   const slidesCount = images.length;
+
+  const easterEgg = () => {
+    if (ClickCount === 9) {
+      setImages([
+        ...images,
+        {
+          img: "https://nftlstorage.blob.core.windows.net/coolstuff/surprise.jpeg",
+        },
+      ]);
+    }
+    setClickCount(ClickCount + 1);
+  };
 
   const prevSlide = () => {
     setCurrentSlide((s) => (s === 0 ? slidesCount - 1 : s - 1));
@@ -85,7 +80,13 @@ const Carousels = ({ images }) => {
         <Flex w="full" overflow="hidden" pos="relative">
           <Flex w="full" {...carouselStyle}>
             {images.map((slide, sid) => (
-              <Box key={`slide-${sid}`} boxSize="full" shadow="md" flex="none">
+              <Box
+                onClick={sid === 4 ? easterEgg : null}
+                key={`slide-${sid}`}
+                boxSize="full"
+                shadow="md"
+                flex="none"
+              >
                 <Text
                   color="white"
                   fontSize="xs"

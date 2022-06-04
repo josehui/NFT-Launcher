@@ -1,30 +1,17 @@
-import { ReactNode } from "react";
 import {
   Box,
   Flex,
-  Avatar,
   Link,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
   HStack,
   useColorMode,
-  Center,
   IconButton,
 } from "@chakra-ui/react";
-import {
-  MoonIcon,
-  SunIcon,
-  HamburgerIcon,
-  CloseIcon,
-  AddIcon,
-} from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { Link as RLink } from "react-router-dom";
 
 const Links = [
   { name: "Home", url: "/" },
@@ -33,6 +20,7 @@ const Links = [
 ];
 const NavLink = ({ url, children }) => (
   <Link
+    as={RLink}
     px={2}
     py={1}
     rounded={"md"}
@@ -40,7 +28,7 @@ const NavLink = ({ url, children }) => (
       textDecoration: "none",
       bg: useColorModeValue("gray.200", "gray.700"),
     }}
-    href={url}
+    to={url}
   >
     {children}
   </Link>
@@ -85,39 +73,6 @@ export default function Nav() {
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
-
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={"full"}
-                  variant={"link"}
-                  cursor={"pointer"}
-                  minW={0}
-                >
-                  <Avatar
-                    size={"sm"}
-                    src={"https://avatars.dicebear.com/api/male/username.svg"}
-                  />
-                </MenuButton>
-                <MenuList alignItems={"center"}>
-                  <br />
-                  <Center>
-                    <Avatar
-                      size={"2xl"}
-                      src={"https://avatars.dicebear.com/api/male/username.svg"}
-                    />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>Username</p>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  <MenuItem>Your NFTs</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
-                </MenuList>
-              </Menu>
             </Stack>
           </Flex>
         </Flex>

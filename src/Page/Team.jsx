@@ -9,22 +9,24 @@ import {
   SimpleGrid,
   Heading,
 } from "@chakra-ui/react";
+import MuscleDog from "@/public/images/muscledog.jpeg";
+import FatBoi from "@/public/images/fatboi.jpg";
 
 const TeamInfo = [
   {
     name: "Muscle man",
     des: "Code",
-    img: "https://ih1.redbubble.net/image.2017580507.9449/st,small,507x507-pad,600x600,f8f8f8.jpg",
+    img: MuscleDog,
   },
   {
     name: "Fatboi 1",
     des: "Full of ideas; did nothing",
-    img: "https://m.media-amazon.com/images/I/51687CO61NL._AC_SL1500_.jpg",
+    img: FatBoi,
   },
   {
     name: "Fatboi 2",
     des: "Photoshop your image",
-    img: "https://m.media-amazon.com/images/I/51687CO61NL._AC_SL1500_.jpg",
+    img: FatBoi,
   },
 ];
 const Team = () => {
