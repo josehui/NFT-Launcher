@@ -33,7 +33,7 @@ const Team = () => {
   return (
     <>
       <Heading as="h2" size="xl" mt={6} mb={2} textAlign="center">
-        World's mightiest heroes
+        World&apos;s mightiest heroes
       </Heading>
       <Flex
         bg={useColorModeValue("#F9FAFB", "gray.600")}
@@ -43,7 +43,7 @@ const Team = () => {
         justifyContent="center"
       >
         <SimpleGrid columns={[1, 1, 2, 3]} spacingX={20} spacingY={10}>
-          {TeamInfo.map((member) => (
+          {TeamInfo.map((member, idx) => (
             <Box
               w="xs"
               bg={useColorModeValue("white", "gray.800")}
@@ -51,6 +51,7 @@ const Team = () => {
               rounded="lg"
               overflow="hidden"
               mx="auto"
+              key={idx}
             >
               <Image
                 w="full"

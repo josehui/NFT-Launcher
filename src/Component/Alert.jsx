@@ -1,4 +1,3 @@
-import React from "react";
 import { chakra, Box, Icon, Flex, useColorModeValue } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 
