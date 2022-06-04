@@ -27,7 +27,7 @@ const Hero = () => {
           as={Box}
           textAlign={"center"}
           spacing={{ base: 8, md: 14 }}
-          py={{ base: 5, md: 10 }}
+          my={{ base: 5, md: 10 }}
         >
           <Heading
             fontWeight={600}

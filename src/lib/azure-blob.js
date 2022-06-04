@@ -1,15 +1,8 @@
 import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
-import path from "path-browserify";
 
 const containerName = `free-tier`;
 const sasToken = import.meta.env.VITE_STORAGESASTOKEN;
 const storageAccountName = import.meta.env.VITE_STORAGERESOURCENAME;
-
-const generateImageName = (fileName) => {
-  return `F-${Math.random().toString(36).substring(2, 13)}${
-    path.parse(fileName).ext
-  }`;
-};
 
 // <snippet_isStorageConfigured>
 // Feature flag - disable storage feature to app if not configured
@@ -37,11 +30,9 @@ const getBlobsInContainer = async (containerClient) => {
 // </snippet_getBlobsInContainer>
 
 // <snippet_createBlobInContainer>
-const createBlobInContainer = async (containerClient, file) => {
+const createBlobInContainer = async (containerClient, file, file_name) => {
   // create blobClient for container
-  const blobClient = containerClient.getBlockBlobClient(
-    generateImageName(file.name)
-  );
+  const blobClient = containerClient.getBlockBlobClient(file_name);
 
   // set mimetype as determined from browser with file upload control
   const options = { blobHTTPHeaders: { blobContentType: file.type } };
@@ -52,9 +43,9 @@ const createBlobInContainer = async (containerClient, file) => {
 // </snippet_createBlobInContainer>
 
 // <snippet_uploadFileToBlob>
-const uploadFileToBlob = async (file) => {
+const uploadFileToBlob = async (file, file_name) => {
   if (!file) return [];
-
+  console.log(file_name);
   // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
   const blobService = new BlobServiceClient(
     `https://${storageAccountName}.blob.core.windows.net/?${sasToken}`
@@ -67,7 +58,11 @@ const uploadFileToBlob = async (file) => {
   });
 
   // upload file
-  const req_meta = await createBlobInContainer(containerClient, file);
+  const req_meta = await createBlobInContainer(
+    containerClient,
+    file,
+    file_name
+  );
 
   // get list of blobs in container
   return req_meta;

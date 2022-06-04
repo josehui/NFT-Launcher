@@ -118,7 +118,7 @@ const Carousels = ({ images, setImages }) => {
               <Box
                 key={`dots-${slide}`}
                 cursor="pointer"
-                boxSize={["7px", , "15px"]}
+                boxSize={["7px", "15px"]}
                 m="0 2px"
                 bg={
                   currentSlide === slide ? "blackAlpha.800" : "blackAlpha.500"

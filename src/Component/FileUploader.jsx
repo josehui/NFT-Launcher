@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { Container, Center } from "@chakra-ui/react";
-
+import { Container } from "@chakra-ui/react";
 // Import React FilePond
 import { FilePond, registerPlugin } from "react-filepond";
 
 // Import FilePond styles
 import "filepond/dist/filepond.min.css";
 import "@/src/style/FilePond.css";
+
+import path from "path-browserify";
 
 // Import the Image EXIF Orientation and Image Preview plugins
 // Note: These need to be installed separately
@@ -17,7 +17,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImageEdit from "filepond-plugin-image-edit";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import uploadFileToBlob, { isStorageConfigured } from "@/src/lib/azure-blob";
+import uploadFileToBlob from "@/src/lib/azure-blob";
 
 // Register the plugins
 registerPlugin(
@@ -27,7 +27,14 @@ registerPlugin(
   FilePondPluginImageEdit
 );
 
-const Uploader = ({ setItem, setImageUploaded }) => {
+const generateImageName = (sourceFileName, isPixel = false) => {
+  const pixelTag = isPixel ? "P-" : "";
+  return `F-${pixelTag}${Math.random().toString(36).substring(2, 13)}${
+    path.parse(sourceFileName).ext
+  }`;
+};
+
+const Uploader = ({ setItem, setImageUploaded, PixelStyle }) => {
   const [files, setFiles] = useState([]);
   return (
     <Container>
@@ -52,7 +59,7 @@ const Uploader = ({ setItem, setImageUploaded }) => {
             transfer,
             options
           ) => {
-            uploadFileToBlob(file)
+            uploadFileToBlob(file, generateImageName(file.name, PixelStyle))
               .then((res) => {
                 load(res);
                 setItem(res);
@@ -73,7 +80,6 @@ const Uploader = ({ setItem, setImageUploaded }) => {
         labelIdle='Drag & Drop your images or <span class="filepond--label-action">Browse</span>'
         credits={false}
       />
-      <Container></Container>
     </Container>
   );
 };

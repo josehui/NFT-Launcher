@@ -7,10 +7,13 @@ from . import image_generator as IG
 
 def main(event: func.EventGridEvent, doc: func.Out[func.Document]):
 
-    # TO-DO: Add image generation code
     event_data = event.get_json()
     imgURL = event_data['url']
-    previewImages, bundleUrl = IG.process_images(imgURL)
+    # Check if need pixelate
+    isPixel = ('P-' in imgURL)
+    print('isPixel: ', isPixel)
+    # Image generation func
+    previewImages, bundleUrl = IG.process_images(imgURL, isPixel)
 
     # event logger
     event_data['previewImages'] = previewImages

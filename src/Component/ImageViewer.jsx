@@ -90,11 +90,9 @@ const Viewer = ({ Item }) => {
       {BundleUrl && (
         <HStack mt={10} spacing={8} justify="center">
           <Button onClick={onOpen}>Buy me coffee</Button>
-          <Button colorScheme="messenger">
-            <Link href={BundleUrl} isExternal>
-              Download zip
-            </Link>
-          </Button>
+          <Link href={BundleUrl} style={{ textDecoration: "none" }} isExternal>
+            <Button colorScheme="messenger">Download zip</Button>
+          </Link>
         </HStack>
       )}
       <Modal isOpen={isOpen} onClose={onClose}>

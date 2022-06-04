@@ -78,12 +78,17 @@ def load_image(image_url, image_size=(256, 256), preserve_aspect_ratio=True):
     return img
 
 
-def generate_image(content_image, style_image_url):
+def generate_image(content_image, style_image_url, isPixel):
     style_image = load_image(style_image_url, style_img_size)
     style_image = tf.nn.avg_pool(
         style_image, ksize=[3, 3], strides=[1, 1], padding='SAME')
     stylized_image = hub_module(tf.constant(
         content_image), tf.constant(style_image))[0]
+    if (isPixel):
+        stylized_image = tf.image.resize(
+            stylized_image, (48, 48), preserve_aspect_ratio=True)
+        stylized_image = tf.image.resize(
+            stylized_image, (output_image_size, output_image_size), method='nearest', preserve_aspect_ratio=True)
     img_data = io.BytesIO()
     tf.keras.utils.save_img(img_data, stylized_image[0], file_format='jpeg')
     img_data.seek(0)
@@ -98,14 +103,14 @@ def generate_zip(files):
     return mem_zip.getvalue()
 
 
-def process_images(source_image_url):
+def process_images(source_image_url, isPixel=False):
     preview_images = []
     image_files = []
     source_image = load_image(source_image_url, output_img_size)
     image_name_prefix = os.path.splitext(os.path.basename(source_image_url))[0]
     random_styles_url = get_random_styles(output_batch_size)
     for i, style in enumerate(random_styles_url):
-        img_data = generate_image(source_image, style)
+        img_data = generate_image(source_image, style, isPixel)
         img_name = f"{image_name_prefix}_nftl_{i}.jpg"
         if i < preview_size:
             preview_img = storage_client.uploadFile(
