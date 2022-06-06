@@ -1,5 +1,16 @@
-import React, { useState } from "react";
-import { Container } from "@chakra-ui/react";
+import { useState } from "react";
+import {
+  Container,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+} from "@chakra-ui/react";
 // Import React FilePond
 import { FilePond, registerPlugin } from "react-filepond";
 
@@ -18,6 +29,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImageEdit from "filepond-plugin-image-edit";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import uploadFileToBlob from "@/src/lib/azure-blob";
+import ImageEditor from "./ImageEditor";
 
 // Register the plugins
 registerPlugin(
@@ -34,8 +46,86 @@ const generateImageName = (sourceFileName, isPixel = false) => {
   }`;
 };
 
-const Uploader = ({ setItem, setImageUploaded, PixelStyle }) => {
+const Uploader = ({ setItem, setImageUploaded, EditImage, PixelStyle }) => {
   const [files, setFiles] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [imageToEdit, setImageToEdit] = useState();
+
+  const ManualClose = () => {
+    return (
+      <>
+        <Modal
+          closeOnOverlayClick={false}
+          isOpen={isOpen}
+          onClose={imageEditor.onclose}
+        >
+          <ModalOverlay />
+          <ModalContent minW={[350, 400, 600, 800]}>
+            <ModalHeader>Edit your image</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              {imageToEdit && (
+                <ImageEditor
+                  image={imageToEdit}
+                  saveEdit={imageEditor.onconfirm}
+                  closeEdit={imageEditor.oncancel}
+                />
+              )}
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3}>
+                Save
+              </Button>
+              <Button onClick={imageEditor.oncancel}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  };
+  const imageEditor = {
+    // Called by FilePond to edit the image
+    // - should open your image editor
+    // - receive          s file object and image edit instructions
+    open: (file) => {
+      const objectURL = window.URL.createObjectURL(file);
+      setImageToEdit(objectURL);
+      onOpen();
+    },
+
+    // Callback set by FilePond
+    // - should be called by the editor when user confirms editing
+    // - should receive output object, resulting edit information
+    onconfirm: (output) => {
+      fetch(output.imageBase64)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const fileObject = new File([blob], output.fullName, {
+            type: output.mimeType,
+          });
+          setFiles([fileObject]);
+          console.log("edited_file", fileObject);
+          onClose();
+        });
+    },
+
+    // Callback set by FilePond
+    // - should be called by the editor when user cancels editing
+    oncancel: () => {
+      console.log("cancelled");
+      onClose();
+    },
+
+    // Callback set by FilePond
+    // - should be called by the editor when user closes the editor
+    onclose: () => {
+      console.log("closed");
+      setFiles([]);
+      onClose();
+    },
+  };
+
   return (
     <Container>
       <FilePond
@@ -43,7 +133,10 @@ const Uploader = ({ setItem, setImageUploaded, PixelStyle }) => {
         files={files}
         onupdatefiles={setFiles}
         allowMultiple={false}
-        // instantUpload={false}
+        instantUpload={!EditImage}
+        allowImageEdit={EditImage}
+        imageEditEditor={imageEditor}
+        styleImageEditButtonEditItemPosition="center"
         onprocessfile={() => {
           setImageUploaded(true);
         }}
@@ -80,6 +173,7 @@ const Uploader = ({ setItem, setImageUploaded, PixelStyle }) => {
         labelIdle='Drag & Drop your images or <span class="filepond--label-action">Browse</span>'
         credits={false}
       />
+      <ManualClose />
     </Container>
   );
 };

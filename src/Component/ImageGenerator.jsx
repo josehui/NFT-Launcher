@@ -1,8 +1,14 @@
 import Uploader from "./FileUploader";
-import ImageEditor from "./TEST-ImageEditor";
 import Viewer from "./ImageViewer";
 import { useState } from "react";
-import { Container, Stack, Switch, Text, HStack } from "@chakra-ui/react";
+import {
+  Container,
+  Stack,
+  Switch,
+  Text,
+  HStack,
+  Tooltip,
+} from "@chakra-ui/react";
 
 const ImageGenerator = () => {
   const [Item, setItem] = useState("");
@@ -20,26 +26,29 @@ const ImageGenerator = () => {
             }}
             isChecked={EditImage}
           />
-          <Text>Edit image before upload</Text>
+          <Text>Edit before upload</Text>
         </HStack>
         <HStack>
-          <Switch
-            size="lg"
-            onChange={() => {
-              setPixelStyle(!PixelStyle);
-            }}
-            isChecked={PixelStyle}
-          />
-          <Text>Pixel style (Trust me, dont do it)</Text>
+          <Tooltip label="Trust me, don't do it" placement="top-start">
+            <Switch
+              size="lg"
+              onChange={() => {
+                setPixelStyle(!PixelStyle);
+              }}
+              isChecked={PixelStyle}
+            />
+          </Tooltip>
+          <Text>Pixel style</Text>
         </HStack>
       </Stack>
       <Uploader
         setItem={setItem}
         setImageUploaded={setImageUploaded}
+        EditImage={EditImage}
         PixelStyle={PixelStyle}
       />
       {ImageUploaded && <Viewer Item={Item} />}
-      <ImageEditor />
+      {/* <ImageEditor /> */}
     </Container>
   );
 };

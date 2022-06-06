@@ -1,9 +1,7 @@
-import React, { useState } from "react";
 import FilerobotImageEditor, {
   TABS,
   TOOLS,
 } from "react-filerobot-image-editor";
-import { Button, Center } from "@chakra-ui/react";
 
 const editorTheme = {
   palette: {
@@ -15,36 +13,26 @@ const editorTheme = {
     fontFamily: "Roboto, Arial",
   },
 };
-const ImageEditor = () => {
-  const [isImgEditorShown, setIsImgEditorShown] = useState(false);
-
-  const openImgEditor = () => {
-    setIsImgEditorShown(true);
-  };
-
-  const closeImgEditor = () => {
-    setIsImgEditorShown(false);
-  };
-
+const ImageEditor = ({ image, saveEdit, closeEdit }) => {
   return (
-    <div>
-      <Center>
-        <Button mt={5} onClick={openImgEditor}>
-          Open Filerobot image editor
-        </Button>
-      </Center>
-      {isImgEditorShown && (
+    <>
+      {image && (
         <FilerobotImageEditor
-          source="https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"
+          // source="https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"
+          source={image}
+          // source="/Users/josehui/Pictures/HKGolden_Plastic_Icon.png"
           theme={editorTheme}
-          onSave={(editedImageObject, designState) =>
-            console.log("saved", editedImageObject, designState)
-          }
-          onClose={closeImgEditor}
+          onBeforeSave={() => false}
+          onSave={(editedImageObject, designState) => {
+            console.log("saved", editedImageObject, designState);
+            saveEdit(editedImageObject);
+          }}
+          onClose={closeEdit}
           annotationsCommon={{
             fill: "#ff0000",
           }}
-          Text={{ text: "Filerobot..." }}
+          Text={{ text: "Template..." }}
+          showBackButton={true}
           Crop={{
             presetsItems: [
               {
@@ -86,12 +74,12 @@ const ImageEditor = () => {
               },
             ],
           }}
-          tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK]} // or {['Adjust', 'Annotate', 'Watermark']}
+          tabsIds={[TABS.ADJUST, TABS.ANNOTATE]} // or {['Adjust', 'Annotate', 'Watermark']}
           defaultTabId={TABS.ANNOTATE} // or 'Annotate'
           defaultToolId={TOOLS.TEXT} // or 'Text'
         />
       )}
-    </div>
+    </>
   );
 };
 
