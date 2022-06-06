@@ -1,13 +1,12 @@
 import Hero from "../Component/Hero";
-import CallToActionLeft from "../Component/CallToAction";
 import ImageGenerator from "../Component/ImageGenerator";
-
+import CallToActions from "../Component/CallToAction";
 const Home = () => {
   return (
     <>
       <Hero />
       <ImageGenerator />
-      <CallToActionLeft id="guide" />
+      <CallToActions />
     </>
   );
 };
