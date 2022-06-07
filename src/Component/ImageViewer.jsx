@@ -60,7 +60,7 @@ const Viewer = ({ Item }) => {
         onRetryAttempt: (err) => {
           const cfg = rax.getConfig(err);
           console.log(
-            `Get images retry attempt -  #${cfg.currentRetryAttempt}`
+            `Pooling for generated image attempt -  #${cfg.currentRetryAttempt}`
           );
         },
       },

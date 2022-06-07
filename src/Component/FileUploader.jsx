@@ -6,10 +6,8 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
 } from "@chakra-ui/react";
 // Import React FilePond
 import { FilePond, registerPlugin } from "react-filepond";
@@ -72,12 +70,6 @@ const Uploader = ({ setItem, setImageUploaded, EditImage, PixelStyle }) => {
                 />
               )}
             </ModalBody>
-
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
-                Save
-              </Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
       </>

@@ -8,15 +8,14 @@ import {
   Button,
   Image,
   Icon,
-  IconButton,
-  createIcon,
   useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
 import samplePic from "@//Assets/Images/sample.png";
 import deepSea from "@//Assets/Images/deep-sea.jpeg";
 import javaPic from "@//Assets/Images/java.webp";
 
-export const CallToActionOne = (props) => {
+export const CallToActionOne = () => {
   return (
     <Container id="guide" maxW={"7xl"}>
       <Stack
@@ -78,16 +77,18 @@ export const CallToActionOne = (props) => {
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}
           >
-            <Button
-              rounded={"full"}
-              size={"lg"}
-              fontWeight={"normal"}
-              px={6}
-              colorScheme={"facebook"}
-              _hover={{ bg: "red.500" }}
-            >
-              Get started
-            </Button>
+            <Link _hover={{ textDecoration: "none" }} href="/#image-upload">
+              <Button
+                rounded={"full"}
+                size={"lg"}
+                fontWeight={"normal"}
+                px={6}
+                colorScheme={"facebook"}
+                _hover={{ bg: "red.500" }}
+              >
+                Get started
+              </Button>
+            </Link>
           </Stack>
         </Stack>
       </Stack>
@@ -95,7 +96,7 @@ export const CallToActionOne = (props) => {
   );
 };
 
-export const CallToActionSecond = (props) => {
+export const CallToActionSecond = () => {
   return (
     <Container maxW={"7xl"}>
       <Stack
@@ -173,7 +174,7 @@ export const CallToActionSecond = (props) => {
   );
 };
 
-export const CallToActionThird = (props) => {
+export const CallToActionThird = () => {
   return (
     <Container maxW={"7xl"}>
       <Stack

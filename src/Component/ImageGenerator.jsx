@@ -16,7 +16,7 @@ const ImageGenerator = () => {
   const [PixelStyle, setPixelStyle] = useState(false);
   const [EditImage, setEditImage] = useState(false);
   return (
-    <Container maxW={"2xl"}>
+    <Container id="image-upload" maxW={"2xl"}>
       <Stack
         mb={12}
         direction="row"
