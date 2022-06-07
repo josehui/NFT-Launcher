@@ -34,6 +34,7 @@ jobs:
         env:
           VITE_STORAGESASTOKEN: ${{ secrets.VITE_STORAGESASTOKEN }}
           VITE_STORAGERESOURCENAME: ${{ secrets.VITE_STORAGERESOURCENAME }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

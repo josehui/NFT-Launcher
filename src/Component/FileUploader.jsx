@@ -77,7 +77,6 @@ const Uploader = ({ setItem, setImageUploaded, EditImage, PixelStyle }) => {
               <Button colorScheme="blue" mr={3}>
                 Save
               </Button>
-              <Button onClick={imageEditor.oncancel}>Cancel</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>

@@ -43,7 +43,7 @@ const Viewer = ({ Item }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   rax.attach();
-  axios.defaults.baseURL = import.meta.env.VITE_API_SERVER;
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   useEffect(async () => {
     setGeneratingImage(true);

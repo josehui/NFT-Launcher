@@ -24,9 +24,9 @@ preview_size = 5
 # Model trained with 256x256
 style_img_size = (256, 256)
 
-# Load TF Hub module.
-hub_handle = 'https://nftlstorage.blob.core.windows.net/tf-model/magenta_arbitrary-image-stylization-v1-256_2.tar.gz'
-hub_module = hub.load(hub_handle)
+# Load TF Hub module. Switched to TFLite
+# hub_handle = 'https://nftlstorage.blob.core.windows.net/tf-model/magenta_arbitrary-image-stylization-v1-256_2.tar.gz'
+# hub_module = hub.load(hub_handle)
 
 # Load TFLite model
 style_predict_path = tf.keras.utils.get_file(
