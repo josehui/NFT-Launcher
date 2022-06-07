@@ -50,12 +50,13 @@ const Viewer = ({ Item }) => {
     setBundleUrl("");
     const reqConfig = {
       raxConfig: {
-        retry: 10,
-        retryDelay: 1000,
+        retry: 25,
+        retryDelay: 4000,
         statusCodesToRetry: [
           [400, 429],
           [500, 599],
         ],
+        backoffType: "static",
         onRetryAttempt: (err) => {
           const cfg = rax.getConfig(err);
           console.log(

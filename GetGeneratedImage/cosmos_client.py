@@ -1,11 +1,9 @@
-from ast import Raise
-from azure.cosmos import exceptions, CosmosClient, PartitionKey
+from azure.cosmos import CosmosClient, PartitionKey
 import os
-from tenacity import *
 
 # Initialize the Cosmos client with connection string
 client = CosmosClient.from_connection_string(
-    os.environ["ConnectionStrings:AzureCosmosDBConnectionString"])
+    os.environ["AzureCosmosDBConnectionString"])
 
 # </create_database_if_not_exists>
 database_name = 'Images'
@@ -23,9 +21,3 @@ container = database.create_container_if_not_exists(
 
 def read_item(id):
     return container.read_item(item=id, partition_key=id)
-
-# NOT USED - changed to do retry on frontend
-# @retry(stop=stop_after_attempt(4), wait=wait_fixed(2))
-# def try_read_item(id):
-#     print ("tryhihi ..")
-#     return container.read_item(item=id, partition_key=id)

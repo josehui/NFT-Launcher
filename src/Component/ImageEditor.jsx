@@ -24,7 +24,6 @@ const ImageEditor = ({ image, saveEdit, closeEdit }) => {
           theme={editorTheme}
           onBeforeSave={() => false}
           onSave={(editedImageObject, designState) => {
-            console.log("saved", editedImageObject, designState);
             saveEdit(editedImageObject);
           }}
           onClose={closeEdit}

@@ -17,7 +17,12 @@ const ImageGenerator = () => {
   const [EditImage, setEditImage] = useState(false);
   return (
     <Container maxW={"2xl"}>
-      <Stack mb={12} direction="row" spacing={[5, 12, 24]} justify="center">
+      <Stack
+        mb={12}
+        direction="row"
+        spacing={{ base: 2, md: 24 }}
+        justify="center"
+      >
         <HStack>
           <Switch
             size="lg"

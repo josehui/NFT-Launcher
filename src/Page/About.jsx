@@ -1,8 +1,8 @@
 import { Box, Heading, Text, Center, Container } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
-import PortfolioMeme from "@/public/images/meme1.jpeg";
-import NFTmeme from "@/public/images/NFTmeme.png";
-import DndMeme from "@/public/images/DndNft.webp";
+import PortfolioMeme from "@/Assets/Images/meme1.jpeg";
+import NFTmeme from "@/Assets/Images/NFTmeme.png";
+import DndMeme from "@/Assets/Images/DndNft.webp";
 const About = () => {
   return (
     <Box textAlign="center" py={10} px={6}>

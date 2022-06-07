@@ -8,8 +8,8 @@ import {
   SimpleGrid,
   Heading,
 } from "@chakra-ui/react";
-import MuscleDog from "@/public/images/muscledog.jpeg";
-import FatBoi from "@/public/images/fatboi.jpg";
+import MuscleDog from "@//Assets/Images/muscledog.jpeg";
+import FatBoi from "@//Assets/Images/fatboi.jpg";
 
 const TeamInfo = [
   {

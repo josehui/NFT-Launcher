@@ -1,11 +1,8 @@
 import functools
 import os
 import io
-from matplotlib import gridspec
-import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
-import logging
 from . import storage_client
 import random
 import zipfile
@@ -19,7 +16,7 @@ style_base_url = 'https://nftlstorage.blob.core.windows.net/'
 styles_container = 'style-art-basel-2022'
 
 # The content image size can be arbitrary.
-output_image_size = 500
+output_image_size = 384
 output_img_size = (output_image_size, output_image_size)
 # Number of generated images
 output_batch_size = 10
@@ -30,6 +27,12 @@ style_img_size = (256, 256)
 # Load TF Hub module.
 hub_handle = 'https://nftlstorage.blob.core.windows.net/tf-model/magenta_arbitrary-image-stylization-v1-256_2.tar.gz'
 hub_module = hub.load(hub_handle)
+
+# Load TFLite model
+style_predict_path = tf.keras.utils.get_file(
+    'style_predict.tflite', 'https://nftlstorage.blob.core.windows.net/tf-model/magenta_arbitrary-image-stylization-v1-256_int8_prediction_1.tflite')
+style_transform_path = tf.keras.utils.get_file(
+    'style_transform.tflite', 'https://nftlstorage.blob.core.windows.net/tf-model/magenta_arbitrary-image-stylization-v1-256_int8_transfer_1.tflite')
 
 
 def get_random_styles(sample_size=10):
@@ -94,6 +97,65 @@ def generate_image(content_image, style_image_url, isPixel):
     img_data.seek(0)
     return img_data
 
+# Function to run style prediction on preprocessed style image.
+
+
+def run_style_predict(preprocessed_style_image):
+    # Load the model.
+    interpreter = tf.lite.Interpreter(model_path=style_predict_path)
+
+    # Set model input.
+    interpreter.allocate_tensors()
+    input_details = interpreter.get_input_details()
+    interpreter.set_tensor(input_details[0]["index"], preprocessed_style_image)
+
+    # Calculate style bottleneck.
+    interpreter.invoke()
+    style_bottleneck = interpreter.tensor(
+        interpreter.get_output_details()[0]["index"]
+    )()
+
+    return style_bottleneck
+
+# Run style transform on preprocessed style image
+
+
+def run_style_transform(style_bottleneck, preprocessed_content_image):
+    # Load the model.
+    interpreter = tf.lite.Interpreter(model_path=style_transform_path)
+
+    # Set model input.
+    input_details = interpreter.get_input_details()
+    interpreter.allocate_tensors()
+
+    # Set model inputs.
+    interpreter.set_tensor(
+        input_details[0]["index"], preprocessed_content_image)
+    interpreter.set_tensor(input_details[1]["index"], style_bottleneck)
+    interpreter.invoke()
+
+    # Transform content image.
+    stylized_image = interpreter.tensor(
+        interpreter.get_output_details()[0]["index"]
+    )()
+
+    return stylized_image
+
+
+def generate_image_lite(content_image, style_image_url, isPixel):
+    style_image = load_image(style_image_url, style_img_size)
+    style_bottleneck = run_style_predict(style_image)
+    stylized_image = run_style_transform(style_bottleneck, content_image)
+    if (isPixel):
+        stylized_image = tf.image.resize(
+            stylized_image, (48, 48), preserve_aspect_ratio=True)
+        stylized_image = tf.image.resize(
+            stylized_image, (output_image_size, output_image_size), method='nearest', preserve_aspect_ratio=True)
+    img_data = io.BytesIO()
+    tf.keras.utils.save_img(img_data, stylized_image[0], file_format='jpeg')
+    img_data.seek(0)
+    return img_data
+
 
 def generate_zip(files):
     mem_zip = io.BytesIO()
@@ -110,7 +172,7 @@ def process_images(source_image_url, isPixel=False):
     image_name_prefix = os.path.splitext(os.path.basename(source_image_url))[0]
     random_styles_url = get_random_styles(output_batch_size)
     for i, style in enumerate(random_styles_url):
-        img_data = generate_image(source_image, style, isPixel)
+        img_data = generate_image_lite(source_image, style, isPixel)
         img_name = f"{image_name_prefix}_nftl_{i}.jpg"
         if i < preview_size:
             preview_img = storage_client.uploadFile(
@@ -120,5 +182,4 @@ def process_images(source_image_url, isPixel=False):
     image_zip = generate_zip(image_files)
     zip_name = f"{image_name_prefix}_nftl.zip"
     zip_url = storage_client.uploadFile(image_zip, file_name=zip_name)
-    print('p_img', preview_images)
     return (preview_images, zip_url)

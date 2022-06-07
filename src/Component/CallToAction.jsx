@@ -12,9 +12,9 @@ import {
   createIcon,
   useColorModeValue,
 } from "@chakra-ui/react";
-import samplePic from "@/public/images/sample.png";
-import deepSea from "@/public/images/deep-sea.jpeg";
-import javaPic from "@/public/images/java.webp";
+import samplePic from "@//Assets/Images/sample.png";
+import deepSea from "@//Assets/Images/deep-sea.jpeg";
+import javaPic from "@//Assets/Images/java.webp";
 
 export const CallToActionOne = (props) => {
   return (
@@ -71,7 +71,7 @@ export const CallToActionOne = (props) => {
           </Heading>
           <Text color={"gray.500"}>
             Upload and edit your image then we handle the rest! A set of 10
-            images will be crafted by our hard-working employee in{" "}
+            artistic images will be crafted by our hard-working employee in{" "}
             <b>real-time</b>
           </Text>
           <Stack

@@ -16,7 +16,7 @@ import { FilePond, registerPlugin } from "react-filepond";
 
 // Import FilePond styles
 import "filepond/dist/filepond.min.css";
-import "@/src/style/FilePond.css";
+import "@/style/FilePond.css";
 
 import path from "path-browserify";
 
@@ -28,7 +28,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImageEdit from "filepond-plugin-image-edit";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import uploadFileToBlob from "@/src/lib/azure-blob";
+import uploadFileToBlob from "@/lib/azure-blob";
 import ImageEditor from "./ImageEditor";
 
 // Register the plugins
@@ -105,7 +105,6 @@ const Uploader = ({ setItem, setImageUploaded, EditImage, PixelStyle }) => {
             type: output.mimeType,
           });
           setFiles([fileObject]);
-          console.log("edited_file", fileObject);
           onClose();
         });
     },
@@ -113,14 +112,12 @@ const Uploader = ({ setItem, setImageUploaded, EditImage, PixelStyle }) => {
     // Callback set by FilePond
     // - should be called by the editor when user cancels editing
     oncancel: () => {
-      console.log("cancelled");
       onClose();
     },
 
     // Callback set by FilePond
     // - should be called by the editor when user closes the editor
     onclose: () => {
-      console.log("closed");
       setFiles([]);
       onClose();
     },
@@ -129,7 +126,12 @@ const Uploader = ({ setItem, setImageUploaded, EditImage, PixelStyle }) => {
   return (
     <Container>
       <FilePond
-        acceptedFileTypes={["image/*"]}
+        acceptedFileTypes={[
+          "image/jpeg",
+          "image/png",
+          "image/bmp",
+          "image/gif",
+        ]}
         files={files}
         onupdatefiles={setFiles}
         allowMultiple={false}
@@ -159,7 +161,6 @@ const Uploader = ({ setItem, setImageUploaded, EditImage, PixelStyle }) => {
               })
               .catch((err) => {
                 error(err);
-                console.log(err);
               });
 
             return {

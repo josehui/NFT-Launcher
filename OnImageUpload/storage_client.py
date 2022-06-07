@@ -3,7 +3,7 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, C
 import logging
 
 Container_name = 'free-tier-generated'
-Connect_str = os.environ["ConnectionStrings:AZURE_STORAGE_CONNECTION_STRING"]
+Connect_str = os.environ["AZURE_STORAGE_CONNECTION_STRING"]
 
 # Create the BlobServiceClient object which will be used to create a container client
 Blob_service_client = BlobServiceClient.from_connection_string(Connect_str)

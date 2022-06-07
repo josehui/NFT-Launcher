@@ -11,7 +11,6 @@ def main(event: func.EventGridEvent, doc: func.Out[func.Document]):
     imgURL = event_data['url']
     # Check if need pixelate
     isPixel = ('P-' in imgURL)
-    print('isPixel: ', isPixel)
     # Image generation func
     previewImages, bundleUrl = IG.process_images(imgURL, isPixel)
 

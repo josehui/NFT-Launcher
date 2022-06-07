@@ -45,7 +45,6 @@ const createBlobInContainer = async (containerClient, file, file_name) => {
 // <snippet_uploadFileToBlob>
 const uploadFileToBlob = async (file, file_name) => {
   if (!file) return [];
-  console.log(file_name);
   // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
   const blobService = new BlobServiceClient(
     `https://${storageAccountName}.blob.core.windows.net/?${sasToken}`
