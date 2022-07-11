@@ -18,7 +18,8 @@ jobs:
       - name: Install build dependency
         run: |
           sudo apt-get update
-          sudo apt-get install nasm zlib1g-dev libglu1
+          sudo apt-get -y install nasm zlib1g-dev libglu1 automake autoconf libtool
+          which nasm
       - uses: actions/checkout@v2
         with:
           submodules: true
