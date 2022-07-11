@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
+      - name: Install build dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install nasm zlib1g-dev libglu1
       - uses: actions/checkout@v2
         with:
           submodules: true
