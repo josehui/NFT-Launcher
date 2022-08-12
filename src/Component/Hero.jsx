@@ -8,7 +8,7 @@ import {
   Stack,
   Link,
 } from "@chakra-ui/react";
-
+import { Link as RLink } from "react-router-dom";
 const Hero = () => {
   return (
     <>
@@ -63,7 +63,9 @@ const Hero = () => {
               </Link>
             </Button>
             <Button variant={"link"} colorScheme={"teal"} size={"sm"}>
-              <Link href="/about">Learn more</Link>
+              <Link as={RLink} to="/about">
+                Learn more
+              </Link>
             </Button>
             <Heading fontSize={{ base: "2xl", sm: "3xl", md: "4xl" }}>
               Upload a random image to get started
